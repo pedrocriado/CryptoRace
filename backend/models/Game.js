@@ -10,23 +10,6 @@ const GameSchema = new Schema({
     cryptogram: { 
         type: String
     },
-    playerProgress: [
-        {
-            playerId: {
-                type: Schema.Types.ObjectId,
-                ref: "Users",
-                required: true,
-            },
-            solvedWords: {
-                type: [String],
-                default: [],
-            },
-            timeCompleted: {
-                type: Number,
-                default: null,
-            }
-        },
-    ],
 });
 
 
