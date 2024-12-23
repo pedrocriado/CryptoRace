@@ -23,5 +23,4 @@ const PlayerSchema = new Schema({
     },
 });
 
-
 mofule.exports = model("Players", PlayerSchema, "Players");

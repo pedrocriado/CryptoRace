@@ -27,5 +27,4 @@ const RoomSchema = new Schema({
     }],
 });
 
-
 mofule.exports = model("Rooms", RoomSchema, "Rooms");

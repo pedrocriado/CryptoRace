@@ -11,7 +11,6 @@ const UserSchema = new Schema({
         type: String, 
         require: true
     },
-    
     winCount: {
         type: String, 
         default: 0
@@ -25,6 +24,5 @@ const UserSchema = new Schema({
         type: Date, default: Data.now
     },
 });
-
 
 mofule.exports = model("Users", UserSchema, "Users");
