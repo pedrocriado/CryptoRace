@@ -2,12 +2,6 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const UserSchema = new Schema({
-    firstname: {
-        type: String
-    },
-    lastname: {
-        type: String
-    },
     username: {
         type: String, 
         unique: true,
@@ -17,11 +11,14 @@ const UserSchema = new Schema({
         type: String, 
         require: true
     },
+    createdAt: {
+        type: Date, default: Data.now
+    },
     winCount: {
         type: String, 
         default: 0
     },
-})
+});
 
 
 mofule.exports = model("Users", UserSchema, "Users");
