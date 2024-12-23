@@ -12,5 +12,4 @@ const GameSchema = new Schema({
     },
 });
 
-
 mofule.exports = model("Games", GameSchema, "Games");
