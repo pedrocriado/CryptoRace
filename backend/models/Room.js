@@ -7,12 +7,12 @@ const RoomSchema = new Schema({
         require: true
     },
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref: "Users",
         require: true
     },
     participants: [{ 
-        type: mongoose.Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref: "Users"
     }],
     gameStarted: { 
