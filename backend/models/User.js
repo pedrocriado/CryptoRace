@@ -11,12 +11,18 @@ const UserSchema = new Schema({
         type: String, 
         require: true
     },
-    createdAt: {
-        type: Date, default: Data.now
-    },
+    
     winCount: {
         type: String, 
         default: 0
+    },
+    bestTimes: {
+        type: Map,
+        of: Number,
+        default: {},
+    },
+    createdAt: {
+        type: Date, default: Data.now
     },
 });
 
