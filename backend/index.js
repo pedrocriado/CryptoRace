@@ -6,6 +6,7 @@ const connectToDatabase = require('./config/mongodb');
 const expressServer = app.listen(3001);
 const io = socketio(expressServer);
 
+//connect to mongodb through mongoose
 connectToDatabase();
 
 app.get('/test', (req, res) => {
