@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://dbAdmin6940:dbCryptographyPro1@django.dnf2v.mongodb.net/CryptoRace?retryWrites=true&w=majority$appName=django";
+
+require('dotenv').config({path: '../process.env'});
 
 async function connectToDatabase() {
-    // connect to MongoDB using Mongoose
-    await mongoose.connect(uri)
+    await mongoose.connect(process.env.MONGO_URI)
         .then(() => {
             console.log("You successfully connected to MongoDB using Mongoose!");
         })
