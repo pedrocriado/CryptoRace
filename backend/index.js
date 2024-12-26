@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const helmet = resquire("helmet");
 const socketio = require('socket.io');
 const connectToDatabase = require('./config/mongodb');
 
@@ -8,6 +9,9 @@ const io = socketio(expressServer);
 
 //connect to mongodb through mongoose
 connectToDatabase();
+
+//helemet.js is used for security. It prevenets XSS and ClickJacking attacks
+app.use(helmet());
 
 app.get('/test', (req, res) => {
     res.send('Application Route Returned');
