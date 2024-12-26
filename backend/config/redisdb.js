@@ -1,6 +1,6 @@
 const redis = require('redis');
 
-require('dotenv').config({path: '../process.env'});
+require('dotenv').config();
 
 async function connectToRedisDB() {
     const client = redis.createClient({
