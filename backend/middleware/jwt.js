@@ -12,7 +12,7 @@ const genUserToken = (user) => {
   };
 
   // sign user data with secret and return token
-  return jwt.sign(data, secret, { expiresIn: "1h" }); // 1 hour expiration, can make longer
+  return jwt.sign(data, secret, { expiresIn: "2h" }); // 2 hour expiration, can make longer
 };
 
 // Verifies user JWT
