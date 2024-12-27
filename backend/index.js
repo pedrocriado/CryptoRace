@@ -6,6 +6,7 @@ const connectToMongoDB = require('./config/mongodb');
 const connectToRedisDB = require('./config/redisdb');
 const expressServer = app.listen(3001);
 const io = socketio(expressServer);
+const PORT = process.env.PORT || 5000;
 
 //connect to DBs
 connectToMongoDB();
@@ -18,7 +19,6 @@ app.get('/test', (req, res) => {
     res.send('Application Route Returned');
 })
 
-const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -2,7 +2,7 @@ const redis = require('redis');
 
 require('dotenv').config();
 
-async function connectToRedisDB() {
+const connectToRedisDB = async () => {
     const client = redis.createClient({
         url: process.env.REDIS_URL
     });
