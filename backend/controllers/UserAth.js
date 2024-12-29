@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const Users = require('../models/User');
-
+const genUserToken = require('../middleware');
+ 
 const registerUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
 
@@ -51,7 +52,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await Users.findOne({username});
 
     if(user && (await bcrypt.compare(password, user.password))) {
-        res.json({
+        res.status(201).json({
             _id: user.id,
             username: user.username,
             token: generateToken(user._id),
@@ -63,17 +64,8 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 });
 
-const getMe = asyncHandler(async (req, res) => {
-    res.status(200).json(req.user);
-});
-
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWR_SECRET, {
-        expiresIn: '30d',
-    });
-}
 module.exports  = {
     registerUser,
     loginUser,
-    getMe,
+    logoutUser,
 }

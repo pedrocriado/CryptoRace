@@ -8,6 +8,23 @@ const expressServer = app.listen(3001);
 const io = socketio(expressServer);
 const PORT = process.env.PORT || 5000;
 
+app.use(express.json());
+
+app.use(session({
+  secret: process.env.AUTH_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  // uncomment when used on https
+  cookie: {
+     secure: false, 
+     httpOnly: true, 
+     sameSite: 'strict',
+  },
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 //connect to DBs
 connectToMongoDB();
 connectToRedisDB();
