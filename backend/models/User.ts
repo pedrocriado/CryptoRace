@@ -1,22 +1,35 @@
 import { prop, getModelForClass } from "@typegoose/typegoose";
+import { Types } from "mongoose";
+import { Field, Int, ObjectType } from 'type-graphql';
 
+@ObjectType()
 export class User {
-  @prop({ unique: true, required: true })
-  username!: string; // Use `!` if it's required, not `?`.
+    @Field()
+    readonly id!: Types.ObjectId;
 
-  @prop({ required: true })
-  password!: string;
+    @Field()
+    @prop({ unique: true, required: true })
+    username!: string; // Use `!` if it's required, not `?`.
 
-  @prop({ default: 0 })
-  winCount!: number;
+    @prop({ unique: true, required: true })
+    email!: string;
 
-  @prop({ default: {} }) // Use type function for `Map`.
-  bestTimes!: Map<string, number>;
+    @prop({ required: true })
+    password!: string;
 
-  @prop({ default: Date.now })
-  createdAt!: Date;
+    @Field(_type => Int)
+    @prop({ default: 0 })
+    winCount!: number;
+
+    @Field(() => Map<string, number>)
+    @prop({ default: {} }) 
+    bestTimes!: Map<string, number>;
+
+    @Field()
+    @prop({ default: Date.now })
+    createdAt!: Date;
 }
 
 export const UserModel = getModelForClass(User, {
-  schemaOptions: { collection: "Users" },
+    schemaOptions: { collection: "Users" },
 });
