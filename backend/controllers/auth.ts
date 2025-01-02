@@ -3,6 +3,7 @@ import passport from "passport";
 import { User, UserModel } from "../models/User"; 
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
+import { tryCatch } from "../utils/tryCatch";
 
 export const login = (req: Request, res: Response, cb: NextFunction) => {
   passport.authenticate('local', (err: Error | null, user: User | null, info: any) => {
@@ -27,7 +28,7 @@ export const login = (req: Request, res: Response, cb: NextFunction) => {
   })(req, res, cb);
 };
 
-export const register = async (req: Request, res: Response) => {
+export const register = tryCatch(async (req: Request, res: Response) => {
   const { userName, password } = req.body;
 
   if (!userName || !password) {
@@ -61,9 +62,9 @@ export const register = async (req: Request, res: Response) => {
       createApiResponse(false, MessageTypes.ERROR, 'An error occurred while registering.')
     );
   }
-};
+});
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = tryCatch(async (req: Request, res: Response) => {
   try {
     req.logout((err) => {
       if (err) {
@@ -86,9 +87,9 @@ export const logout = async (req: Request, res: Response) => {
       createApiResponse(false, MessageTypes.ERROR, 'An error occurred while Logging Out.')
     );
   }
-};
+});
 
-export const deleteAccount = async (req: Request, res: Response) => {
+export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
   if (!req.user) {
     return res.status(401).json(
       createApiResponse(false, MessageTypes.ERROR, 'User is not authenticated.')
@@ -122,4 +123,4 @@ export const deleteAccount = async (req: Request, res: Response) => {
       createApiResponse(false, MessageTypes.ERROR, 'Internal server error.')
     );
   }
-};
+});
