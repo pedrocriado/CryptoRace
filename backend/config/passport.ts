@@ -1,8 +1,7 @@
 import { Strategy as LocalStrategy } from "passport-local"; 
-import passport from "passport"; // Import passport
-import { User, UserModel } from "../models/User"; // Adjust the path based on your project
+import passport from "passport";
+import { User, UserModel } from "../models/User";
 
-//TODO: fix all the error introduced from switching from javascript to typescript
 const configurePassport = (passport: passport.PassportStatic): void => {
   passport.use(
     new LocalStrategy(
@@ -26,28 +25,16 @@ const configurePassport = (passport: passport.PassportStatic): void => {
     )
   );
 
-  passport.serializeUser((user:typeof User, cb: (error: any, id?: string) => void) => {
-    console.log("Serializing user:", user);
-    process.nextTick(() => {
-      cb(null, user.userId); // Replace `userId` with the correct field in your User schema
-    });
+  passport.serializeUser((user: any, done) => {
+    done(null, user._id);
   });
 
-  passport.deserializeUser(async (id: string, cb: (error: any, user?: User | null) => void) => {
-    console.log("Deserializing user with id:", id);
+  passport.deserializeUser(async (id: string, done) => {
     try {
-      const user = await UserModel.findOne({ userId: id }); // Query for the user by ID
-      console.log("Deserialized user:", user);
-
-      if (!user) {
-        return cb(new Error("User not found."));
-      }
-
-      process.nextTick(() => {
-        return cb(null, user);
-      });
+      const user = await UserModel.findById(id);
+      done(null, user);
     } catch (error) {
-      cb(error);
+      done(error);
     }
   });
 };
