@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
-import { User, UserModel } from "../models/User"; 
+import { User, UserModel } from "../models/User";
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
 import { tryCatch } from "../utils/tryCatch";
@@ -29,64 +29,54 @@ export const login = (req: Request, res: Response, cb: NextFunction) => {
 };
 
 export const register = tryCatch(async (req: Request, res: Response) => {
-  const { userName, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!userName || !password) {
+  if (!username || !email || !password) {
     return res.status(400).json(
       createApiResponse(false, MessageTypes.ERROR, 'Username and password are required.')
     );
   }
 
-  try {
-    // Check if username already exists
-    const existingUser = await UserModel.findOne({ userName });
 
-    if (existingUser) {
-      return res.status(400).json(
-        createApiResponse(false, MessageTypes.ERROR, 'Username already exists.')
-      );
-    }
+  // Check if username already exists
+  const existingUser = await UserModel.findOne({ username });
 
-    // Create a new user
-    const user = new UserModel({ userName, password });
-
-    // Save the user to the database
-    await user.save();
-
-    return res.status(200).json(
-      createApiResponse(true, MessageTypes.SUCCESS, 'User registered successfully!')
-    );
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json(
-      createApiResponse(false, MessageTypes.ERROR, 'An error occurred while registering.')
+  if (existingUser) {
+    return res.status(400).json(
+      createApiResponse(false, MessageTypes.ERROR, 'Username already exists.')
     );
   }
+
+  // Create a new user
+  const user = new UserModel({ username, email, password });
+
+  // Save the user to the database
+  await user.save();
+
+  return res.status(200).json(
+    createApiResponse(true, MessageTypes.SUCCESS, 'User registered successfully!')
+  );
+
 });
 
 export const logout = tryCatch(async (req: Request, res: Response) => {
-  try {
-    req.logout((err) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json(
+        createApiResponse(false, MessageTypes.ERROR, 'An error occurred during logout.')
+      );
+    }
+    req.session.destroy((err: any) => {
       if (err) {
         return res.status(500).json(
-          createApiResponse(false, MessageTypes.ERROR, 'An error occurred during logout.')
+          createApiResponse(false, MessageTypes.ERROR, 'An error occurred while destroying the session.')
         );
       }
-      req.session.destroy((err:any) => {
-        if (err) {
-          return res.status(500).json(
-            createApiResponse(false, MessageTypes.ERROR, 'An error occurred while destroying the session.')
-          );
-        }
-        res.clearCookie('connect.sid'); // Clear user session
-        return res.json(createApiResponse(true, MessageTypes.SUCCESS, 'Logout successful!'));
-      });
+      res.clearCookie('connect.sid'); // Clear user session
+      return res.json(createApiResponse(true, MessageTypes.SUCCESS, 'Logout successful!'));
     });
-  } catch (error) {
-    return res.status(500).json(
-      createApiResponse(false, MessageTypes.ERROR, 'An error occurred while Logging Out.')
-    );
-  }
+  });
+
 });
 
 export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
@@ -96,31 +86,25 @@ export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
     );
   }
 
-  try {
-    const deletedUser = await UserModel.findOneAndDelete({ userId: (req.user as User)._id });
 
-    if (!deletedUser) {
-      return res.status(404).json(
-        createApiResponse(false, MessageTypes.ERROR, 'User not found.')
+  const deletedUser = await UserModel.findOneAndDelete({ userId: (req.user as User)._id });
+
+  if (!deletedUser) {
+    return res.status(404).json(
+      createApiResponse(false, MessageTypes.ERROR, 'User not found.')
+    );
+  }
+
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json(
+        createApiResponse(false, MessageTypes.ERROR, 'Error logging out after account deletion.')
       );
     }
 
-    req.logout((err) => {
-      if (err) {
-        return res.status(500).json(
-          createApiResponse(false, MessageTypes.ERROR, 'Error logging out after account deletion.')
-        );
-      }
-
-      req.session.destroy(() => {
-        res.clearCookie('connect.sid');
-        res.json(createApiResponse(true, MessageTypes.SUCCESS, 'Account deleted successfully.'));
-      });
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      res.json(createApiResponse(true, MessageTypes.SUCCESS, 'Account deleted successfully.'));
     });
-  } catch (error) {
-    console.error('Error deleting account:', error);
-    res.status(500).json(
-      createApiResponse(false, MessageTypes.ERROR, 'Internal server error.')
-    );
-  }
+  });
 });

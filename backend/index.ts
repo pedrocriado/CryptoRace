@@ -5,6 +5,8 @@ import helmet from "helmet";
 import socketio from "socket.io";
 import connectToMongoDB from "./config/mongodb";
 import connectToRedisDB from "./config/redisdb";
+import initPassport from "./config/passport";
+import authRouter from "./routes/auth";
 
 const app = express();
 const expressServer = app.listen(3001);
@@ -24,8 +26,8 @@ app.use(session({
   },
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+//sets up the user authentication.
+initPassport(app);
 
 // Connect to databases
 connectToMongoDB();
@@ -34,6 +36,7 @@ connectToRedisDB();
 // Helmet for security
 app.use(helmet());
 
+app.use("/", authRouter);
 app.get('/test', (req, res) => {
   res.send('Application Route Returned');
 });
