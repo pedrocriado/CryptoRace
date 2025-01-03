@@ -27,15 +27,15 @@ export class User {
 
     @Field(_type => Int)
     @prop({ default: 0 })
-    winCount?: number;
+    winCount!: number;
 
     @Field(() => Map<string, number>)
     @prop({ default: {} }) 
-    bestTimes?: Map<string, number>;
+    bestTimes!: Map<string, number>;
 
     @Field()
     @prop({ default: Date.now })
-    createdAt?: Date;
+    createdAt!: Date;
 
     public async authenticate(this: DocumentType<User>, password: string): Promise<boolean> {
         return bcrypt.compare(password, this.password);

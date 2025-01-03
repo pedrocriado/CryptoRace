@@ -1,25 +1,30 @@
-import { Strategy as LocalStrategy } from "passport-local"; 
+import { Strategy as LocalStrategy } from "passport-local";
+import { Express, NextFunction } from "express";
 import passport from "passport";
 import { User, UserModel } from "../models/User";
+import { ObjectId } from "mongoose";
 
-const configurePassport = (passport: passport.PassportStatic): void => {
+export default function initPassport(app: Express) {
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   passport.use(
     new LocalStrategy(
-      async (userName: string, password: string, cb: (error: any, user?: User | false, options?: { message: string }) => void) => {
+      async (userName: string, password: string, done: (error: any, user?: User | false, options?: { message: string }) => void) => {
         try {
           const user = await UserModel.findOne({ userName }); // Query for the user
           if (!user) {
-            return cb(null, false, { message: "Username not found." });
+            return done(null, false, { message: "Username not found." });
           }
 
           const valid = await user.authenticate(password);
           if (!valid) {
-            return cb(null, false, { message: "Incorrect Password." });
+            return done(null, false, { message: "Incorrect Password." });
           }
 
-          return cb(null, user);
+          return done(null, user);
         } catch (error) {
-          return cb(error);
+          return done(error);
         }
       }
     )
@@ -29,14 +34,8 @@ const configurePassport = (passport: passport.PassportStatic): void => {
     done(null, user._id);
   });
 
-  passport.deserializeUser(async (id: string, done) => {
-    try {
-      const user = await UserModel.findById(id);
-      done(null, user);
-    } catch (error) {
-      done(error);
-    }
+  passport.deserializeUser(async (id: ObjectId, done) => {
+    const user = await UserModel.findById(id);
+    done(null, user);
   });
 };
-
-export default configurePassport;
