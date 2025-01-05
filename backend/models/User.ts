@@ -17,7 +17,7 @@ export class User {
 
     @Field()
     @prop({ unique: true, required: true })
-    username!: string; // Use `!` if it's required, not `?`.
+    username!: string; 
 
     @prop({ unique: true, required: true })
     email!: string;
