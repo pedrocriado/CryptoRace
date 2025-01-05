@@ -12,7 +12,9 @@ export default function initPassport(app: Express) {
     new LocalStrategy(
       async (username: string, password: string, done: (error: any, user?: User | false, options?: { message: string }) => void) => {
         try {
-          const user = await UserModel.findOne({ username }); // Query for the user
+          
+          const user = await UserModel.findOne({ username: username }); 
+
           if (!user) {
             return done(null, false, { message: "Username not found." });
           }
