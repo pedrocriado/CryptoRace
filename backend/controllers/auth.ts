@@ -14,6 +14,7 @@ export const login = (req: Request, res: Response, cb: NextFunction) => {
       );
     }
 
+    
     req.logIn(user, (err) => {
       console.log('Session after login:', req.session);
       if (err) return cb(err);
