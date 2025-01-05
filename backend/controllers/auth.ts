@@ -80,14 +80,17 @@ export const logout = tryCatch(async (req: Request, res: Response) => {
 });
 
 export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
-  if (!req.user) {
+  const { username } = req.body;
+
+  const user = await UserModel.findOne({username: username});
+
+  if (!user) {
     return res.status(401).json(
       createApiResponse(false, MessageTypes.ERROR, 'User is not authenticated.')
     );
   }
 
-
-  const deletedUser = await UserModel.findOneAndDelete({ userId: (req.user as User)._id });
+  const deletedUser = await UserModel.findByIdAndDelete(user._id);
 
   if (!deletedUser) {
     return res.status(404).json(
