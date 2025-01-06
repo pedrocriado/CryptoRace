@@ -3,7 +3,7 @@ import passport from "passport";
 import { User, UserModel } from "../models/User";
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
-import { tryCatch } from "../utils/tryCatch";
+import tryCatch from "../utils/tryCatch";
 
 export const login = (req: Request, res: Response, cb: NextFunction) => {
   passport.authenticate('local', (err: Error | null, user: User | null, info: any) => {
@@ -14,7 +14,7 @@ export const login = (req: Request, res: Response, cb: NextFunction) => {
       );
     }
 
-    
+
     req.logIn(user, (err) => {
       console.log('Session after login:', req.session);
       if (err) return cb(err);

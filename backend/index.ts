@@ -7,6 +7,7 @@ import connectToMongoDB from "./config/mongodb";
 import connectToRedisDB from "./config/redisdb";
 import initPassport from "./config/passport";
 import authRouter from "./routes/auth";
+import boardRouter from "./routes/leaderboard";
 
 const app = express();
 const expressServer = app.listen(3001);
@@ -31,12 +32,14 @@ initPassport(app);
 
 // Connect to databases
 connectToMongoDB();
-connectToRedisDB();
 
 // Helmet for security
 app.use(helmet());
 
+//creates
 app.use("/", authRouter);
+app.use("/leaderboard", boardRouter);
+
 app.get('/test', (req, res) => {
   res.send('Application Route Returned');
 });
