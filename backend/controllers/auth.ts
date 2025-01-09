@@ -20,10 +20,7 @@ export const login = (req: Request, res: Response, cb: NextFunction) => {
       if (err) return cb(err);
 
       res.json(
-        createApiResponse(true, MessageTypes.SUCCESS, 'Login Successful!', {
-          username: user.username,
-          Id: user._id,
-        })
+        createApiResponse(true, MessageTypes.SUCCESS, 'Login Successful!')
       );
     });
   })(req, res, cb);

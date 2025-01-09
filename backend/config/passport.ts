@@ -1,5 +1,5 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import { Express, NextFunction } from "express";
+import { Express, Request, Response, NextFunction } from "express";
 import passport from "passport";
 import { User, UserModel } from "../models/User";
 import { ObjectId } from "mongoose";
@@ -36,8 +36,16 @@ export default function initPassport(app: Express) {
     done(null, user._id);
   });
 
-  passport.deserializeUser(async (id: ObjectId, done) => {
-    const user = await UserModel.findById(id);
+  passport.deserializeUser(async (_id: ObjectId, done) => {
+    const user = await UserModel.findById(_id);
+    console.log(user);
     done(null, user);
   });
+};
+
+export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+  if (req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect("/");
 };
