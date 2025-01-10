@@ -18,7 +18,7 @@ export const getLeaderboard = tryCatch(async (req: Request, res: Response) => {
 });
 
 export const addUser = tryCatch(async (req: Request, res: Response) => {
-    const personalBest: number = req.body;
+    const personalBest = req.body.personalBest;
     const user = req.user as User;
     await redis.zadd("Leaderboard", personalBest, user.username);
     return res.status(200).json(
