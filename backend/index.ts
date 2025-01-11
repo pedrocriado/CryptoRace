@@ -1,10 +1,9 @@
 import express from "express";
-import passport from "passport";
 import session from "express-session";
 import helmet from "helmet";
 import socketio from "socket.io";
 import connectToMongoDB from "./config/mongodb";
-import connectToRedisDB from "./config/redisdb";
+import rateLimiter from "./config/rateLimiter";
 import initPassport from "./config/passport";
 import authRouter from "./routes/auth";
 import boardRouter from "./routes/leaderboard";
@@ -27,16 +26,19 @@ app.use(session({
   },
 }));
 
-//sets up the user authentication.
+// Sets up the user authentication.
 initPassport(app);
 
-// Connect to databases
+// Applies the rate limiter depending if signed in or not.
+rateLimiter(app);
+
+// Connect to databases.
 connectToMongoDB();
 
-// Helmet for security
+// Helmet for security.
 app.use(helmet());
 
-//creates
+// Sets the API request.
 app.use("/", authRouter);
 app.use("/leaderboard", boardRouter);
 
