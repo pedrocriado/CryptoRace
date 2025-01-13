@@ -42,10 +42,6 @@ app.use(helmet());
 app.use("/", authRouter);
 app.use("/leaderboard", boardRouter);
 
-app.get('/test', (req, res) => {
-  res.send('Application Route Returned');
-});
-
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
