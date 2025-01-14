@@ -1,11 +1,11 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "description": "application server component",
     "main": "index",
     "script": "index.ts",
     "scripts": {
-        "dev": "tsnd --respawn index.js",
+        "start": "node .bin/www",
+        "dev": "nodemon ./bin/www",
         "debug": "tsnd --debug --respawn index.js",
         "build": "tsc"
     },
@@ -19,7 +19,6 @@
         "connect": "^3.7.0",
         "cookie-parser": "^1.4.7",
         "debug": "^4.4.0",
-        "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "express-async-handler": "^1.2.0",
         "express-rate-limit": "^7.5.0",
@@ -45,6 +44,9 @@
         "@types/node": "^22.10.4",
         "@types/passport": "^1.0.17",
         "@types/passport-local": "^1.0.38",
+        "@types/socket.io": "^3.0.1",
+        "dotenv": "^16.4.7",
+        "nodemon": "^3.1.9",
         "ts-node": "^10.9.2"
     }
 }
