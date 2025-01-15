@@ -42,8 +42,4 @@ app.use(helmet());
 app.use("/", authRouter);
 app.use("/leaderboard", boardRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-
 export default app;
