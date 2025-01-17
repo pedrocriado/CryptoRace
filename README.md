@@ -14,6 +14,62 @@
 
 # CryptoRace
 
-This application aims to bring a sense of competition to cryptography, which currently has no other alternative.
+A competitive cryptography web application where users solve cryptography problems and compete on leaderboards.
 
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+
+## Overview
+Crypto Racer is a platform for cryptography enthusiasts, ARG players, and students. Users can create or join lobbies to solve cryptographic puzzles competitively. A leaderboard tracks user progress, highlighting the fastest solvers.
+
+## Features
+- Competitive cryptography puzzles
+- Real-time multiplayer functionality
+- Leaderboard with percentile rankings
+- User authentication (Google/GitHub sign-in)
+- Redis-backed real-time leaderboard
+- WebAssembly for faster cryptographic operations
+
+## Tech Stack
+- **Frontend**: React.js
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB, Redis
+- **Real-Time**: Socket.IO
+- **APIs**: GraphQL
+- **Cryptography**: WebAssembly
+
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/pedrocriado/CryptoRace
+2. Install dependencies:
+    ```bash
+    npm install
+3. Configure the .env file with necessary variables:
+    ```bash
+    MONGO_URL=your-mongodb-url
+    REDIS_URL=your-redis-url
+    AUTH_SECRET=your-secret-key
+4. Start the development server:
+    ```bash
+    npm run dev
+
+## Usage
+1. Register or log in to your account.
+2. Create or join a lobby to start solving cryptographic puzzles.
+3. Compete with other players and track your progress on the leaderboard.
+
+## API Documentation
+- **POST /auth/login**
+  Logs in a user.
+- **POST /auth/register**
+  Registers a new user.
+- **GET /leaderboard**
+  Retrieves the top 10 leaderboard entries. If the user **IS** logged in then the user's entrie will be returned. If the user is **NOT** logged in then the returned user field will be null
+- **GET /leaderboard/rank**
 
