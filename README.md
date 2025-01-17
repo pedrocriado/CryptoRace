@@ -65,11 +65,17 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG players, and studen
 3. Compete with other players and track your progress on the leaderboard.
 
 ## API Documentation
-- **POST /auth/login**
+- **POST /auth/login**:
   Logs in a user.
-- **POST /auth/register**
+- **POST /auth/register**:
   Registers a new user.
-- **GET /leaderboard**
+- **POST /auth/logout**:
+  Logs out a user.
+- **DELETE /auth/delete**:
+  Deletes the current user. The information stored in the leader will also be deleted. 
+- **GET /leaderboard**:
   Retrieves the top 10 leaderboard entries. If the user **IS** logged in then the user's entrie will be returned. If the user is **NOT** logged in then the returned user field will be null
-- **GET /leaderboard/rank**
-
+- **GET /leaderboard/rank**:
+  Retrieves the users rank.
+- **POST /leaderboard/addScore**:
+  Registers or Updates users rank. (The score that is being ranked is an average of all the best times)
