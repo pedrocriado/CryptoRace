@@ -1,4 +1,6 @@
-#!/usr/bin/env node
+#!/usr/bin/env nod
+
+//this file is used to create a http server.
 
 import { Server } from "socket.io";
 import { createServer } from "http";
