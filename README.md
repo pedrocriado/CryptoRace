@@ -25,7 +25,7 @@ A competitive cryptography web application where users solve cryptography proble
 - [API Documentation](#api-documentation)
 
 ## Overview
-Crypto Racer is a platform for cryptography enthusiasts, ARG players, and students. Users can create or join lobbies to solve cryptographic puzzles competitively. A leaderboard tracks user progress, highlighting the fastest solvers.
+Crypto Racer is a platform for cryptography enthusiasts, ARG enthusiasts, and students. Users can create or join lobbies to solve cryptographic puzzles competitively. A leaderboard tracks user progress, highlighting the fastest solvers.
 
 ## Features
 - Competitive cryptography puzzles
@@ -36,12 +36,11 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG players, and studen
 - WebAssembly for faster cryptographic operations
 
 ## Tech Stack
-- **Frontend**: React.js
+- **Frontend**: React.js, HTML5, Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB, Redis
-- **Real-Time**: Socket.IO
-- **APIs**: GraphQL
-- **Cryptography**: WebAssembly
+- **APIs**: RESTapi, GraphQL, WebSocket
+- **Cryptography**: WebAssembly, C
 
 ## Installation
 1. Clone the repository:
@@ -52,13 +51,13 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG players, and studen
     npm install
 3. Configure the .env file with necessary variables:
     ```bash
-    MONGO_URL=your-mongodb-url
-    REDIS_URL=your-redis-url
-    AUTH_SECRET=your-secret-key
+    PORT = 1234
+    MONGO_URL = your-mongodb-url
+    REDIS_URL = your-redis-url
+    AUTH_SECRET = your-secret-key
 4. Start the development server:
     ```bash
     npm start
-
 ## Usage
 1. Register or log in to your account.
 2. Create or join a lobby to start solving cryptographic puzzles.
