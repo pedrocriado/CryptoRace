@@ -57,7 +57,7 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG players, and studen
     AUTH_SECRET=your-secret-key
 4. Start the development server:
     ```bash
-    npm run dev
+    npm start
 
 ## Usage
 1. Register or log in to your account.
