@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
 import { User, UserModel } from "../models/User";
+import { Game, GameModel } from "../models/Game";
+import { Player, PlayerModel } from "../models/Player";
+import { Lobby, LobbyModel } from "../models/Lobby";
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
 import tryCatch from "../utils/tryCatch";
@@ -34,7 +37,6 @@ export const register = tryCatch(async (req: Request, res: Response) => {
       createApiResponse(false, MessageTypes.ERROR, 'Username and password are required.')
     );
   }
-
 
   // Check if username already exists
   const existingUser = await UserModel.findOne({ username });
@@ -77,6 +79,8 @@ export const logout = tryCatch(async (req: Request, res: Response) => {
 
 });
 
+//TODO: after finishing all the lobby APIs modify the function to remove all 
+//data related to the user. eg. Lobby, Game, Party.
 export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
   const { username } = req.body;
 
