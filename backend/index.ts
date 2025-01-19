@@ -6,6 +6,7 @@ import rateLimiter from "./config/rateLimiter";
 import initPassport from "./config/passport";
 import authRouter from "./routes/auth";
 import boardRouter from "./routes/leaderboard";
+import lobbyRouter from "./routes/lobby";
 
 const app = express();
 
@@ -41,5 +42,6 @@ app.use(helmet());
 // Sets the API request.
 app.use("/", authRouter);
 app.use("/leaderboard", boardRouter);
+app.use("/lobby", lobbyRouter);
 
 export default app;
