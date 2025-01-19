@@ -78,3 +78,5 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG enthusiasts, and st
   Retrieves the users rank.
 - **POST /leaderboard/addScore**:
   Registers or Updates users rank. (The score that is being ranked is an average of all the best times)
+- **POST /lobby/createLobby**:
+  Creates a lobby with: a list of cryptographs, name of the lobby, player limit, and if the lobby is private or not. If the User already created a lobby still active then they will not be able to create another new one.
