@@ -38,3 +38,11 @@ export const createLobby = tryCatch(async (req: Request, res: Response) => {
         createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!')
     );
 })
+
+//export const joinLobby = tryCatch(asyn (req:Request, res:Response)) => {
+
+//}
+
+//export const deleteLobby = tryCatch(asyn (req:Request, res:Response)) => {
+
+//}
