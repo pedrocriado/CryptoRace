@@ -80,3 +80,7 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG enthusiasts, and st
   Registers or Updates users rank. (The score that is being ranked is an average of all the best times)
 - **POST /lobby/createLobby**:
   Creates a lobby with: a list of cryptographs, name of the lobby, player limit, and if the lobby is private or not. If the User already created a lobby still active then they will not be able to create another new one.
+- **GET /lobby/joinLobby**:
+  when clicking on a open lobby the API will return the lobbyId. if the lobby is private then it will authenticate the password the user gave
+- **DELETE /lobby/deleteLobby**:
+  remove the users own lobby  
