@@ -9,7 +9,7 @@ import { Lobby, LobbyModel } from "../models/Lobby";
 
 //TODO: fix the participants array.
 export const createLobby = tryCatch(async (req: Request, res: Response) => {
-    const { lobbyName, privateLobby, cryptograms, playerCap } = req.body;
+    const { lobbyName, privateLobby, cryptograms, playerCap, password } = req.body;
 
     const user = req.user as User;
 
@@ -29,20 +29,52 @@ export const createLobby = tryCatch(async (req: Request, res: Response) => {
         createdBy: user._id,
         private: privateLobby,
         cryptograms: cryptograms,
-        playerCap: playerCap
+        playerCap: playerCap,
+        password: password
     });
 
     await lobby.save();
 
     return res.status(200).json(
-        createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!')
+        createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!', lobby._id)
     );
 })
 
-//export const joinLobby = tryCatch(asyn (req:Request, res:Response)) => {
+export const joinLobby = tryCatch(async (req:Request, res:Response) => {
+    const { lobbyId, password } = req.body;
 
-//}
+    const lobby = await LobbyModel.findById(lobbyId);
 
-//export const deleteLobby = tryCatch(asyn (req:Request, res:Response)) => {
+    if(!lobby) {
+        return res.status(400).json(
+            createApiResponse(false, 
+                MessageTypes.ERROR, 
+                'The lobby that you are currently tryign to enter does not exist', 
+                {deleteLobby: true, allowed: false})
+        );
+    }
 
-//}
+    if(lobby.private) {
+        
+        if(!(await lobby.validateLobbyPassword(password))) {
+            return res.status(400).json(
+                createApiResponse(
+                    false, 
+                    MessageTypes.ERROR, 
+                    'The lobby that you are currently tryign to enter does not exist', 
+                    {deleteLobby: false, allowed: false})
+            );
+        } 
+    }
+
+    return res.status(200).json(
+        createApiResponse(true, 
+            MessageTypes.SUCCESS, 
+            'User successfully joined the lobby!', 
+            {deleteLobby: false, allowed: true})
+    );
+})
+
+//export const deleteLobby = tryCatch(asyn (req:Request, res:Response) => {
+
+//})
