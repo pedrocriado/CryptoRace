@@ -26,7 +26,7 @@ export const createLobby = tryCatch(async (req: Request, res: Response) => {
     const lobby = new LobbyModel({
         lobbyName: lobbyName,
         participants: [user._id, user.username],
-        createdBy: user._id,
+        createdBy: [user._id, user.username],
         private: privateLobby,
         cryptograms: cryptograms,
         playerCap: playerCap,
@@ -36,7 +36,10 @@ export const createLobby = tryCatch(async (req: Request, res: Response) => {
     await lobby.save();
 
     return res.status(200).json(
-        createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!', lobby._id)
+        createApiResponse(true, 
+            MessageTypes.SUCCESS, 
+            'User lobby created successfully!', 
+            lobby._id)
     );
 })
 
@@ -75,6 +78,20 @@ export const joinLobby = tryCatch(async (req:Request, res:Response) => {
     );
 })
 
-//export const deleteLobby = tryCatch(asyn (req:Request, res:Response) => {
+export const deleteLobby = tryCatch(async (req:Request, res:Response) => {
+    const user = req.user as User;
 
-//})
+    // Check if username already exists
+    const deletedLobby = await LobbyModel.findOneAndDelete({ createdBy: [user._id, user.username] });
+
+    // Users are only allowed to make 1 lobby
+    if (!deletedLobby) {
+        return res.status(400).json(
+            createApiResponse(false, MessageTypes.ERROR, 'Username still has a lobby open.')
+        );
+    }
+
+    return res.status(200).json(
+        createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!')
+    );
+})
