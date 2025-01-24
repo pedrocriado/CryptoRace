@@ -15,9 +15,9 @@ export class Lobby {
   @prop({ required: true })
   public lobbyName!: string;
 
-  @Field(_type => User)
-  @prop({ ref: () => User, required: true })
-  public createdBy!: Ref<User>;
+  @Field(_type => [User, String])
+  @prop({ required: true })
+  public createdBy!: [Ref<User>, String];
 
   @Field(_type => [User, String])
   @prop({ default: [] })

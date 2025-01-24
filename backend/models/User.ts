@@ -1,6 +1,7 @@
-import { pre, prop, getModelForClass, DocumentType } from "@typegoose/typegoose";
+import { pre, prop, getModelForClass, DocumentType, Ref } from "@typegoose/typegoose";
 import { Types } from "mongoose";
 import { Field, Int, ObjectType } from 'type-graphql';
+import { Lobby } from "./Lobby";
 import bcrypt from "bcryptjs";
 
 @pre<User>("save", async function () {
