@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
-import { deleteLobby } from "./lobby";
 import { User, UserModel } from "../models/User";
-import { Game, GameModel } from "../models/Game";
-import { Player, PlayerModel } from "../models/Player";
-import { Lobby, LobbyModel } from "../models/Lobby";
+import { GameModel } from "../models/Game";
+import { LobbyModel } from "../models/Lobby";
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
 import tryCatch from "../utils/tryCatch";
@@ -83,23 +81,7 @@ export const logout = tryCatch(async (req: Request, res: Response) => {
 //TODO: delete the Party after making that functionality.
 export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
   
-  const { username } = req.body;// I am tired. I will change this later
-
-  const user = await UserModel.findOne({username: username});
-
-  if (!user) {
-    return res.status(401).json(
-      createApiResponse(false, MessageTypes.ERROR, 'User is not authenticated.')
-    );
-  }
-
-  //if the user created a lobby then it will get deleted
-  const deletedLobby = await LobbyModel.findOneAndDelete({ createdBy: user._id});
-
-  //if the lobby existed then it will also delete the Game model
-  if(deletedLobby) {
-    await GameModel.findOneAndDelete({ lobbyId: deletedLobby._id});
-  }
+  const user = req.user as User;
 
   const deletedUser = await UserModel.findByIdAndDelete(user._id);
 
@@ -107,6 +89,14 @@ export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
     return res.status(404).json(
       createApiResponse(false, MessageTypes.ERROR, 'User not found.')
     );
+  }
+
+  //if the user created a lobby then it will get deleted
+  const deletedLobby = await LobbyModel.findOneAndDelete({ createdBy: deletedUser._id});
+
+  //if the lobby existed then it will also delete the Game model
+  if(deletedLobby) {
+    await GameModel.findOneAndDelete({ lobbyId: deletedLobby._id});
   }
 
   req.logout((err) => {

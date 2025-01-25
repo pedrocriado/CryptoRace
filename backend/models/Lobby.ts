@@ -1,6 +1,7 @@
 import { pre, prop, getModelForClass, Ref } from "@typegoose/typegoose";
 import { User } from "./User";
 import bcrypt from "bcryptjs";
+import { Types } from "mongoose";
 import { Field, Int } from 'type-graphql';
 
 @pre<Lobby>("save", async function () {
@@ -11,12 +12,15 @@ import { Field, Int } from 'type-graphql';
 })
 
 export class Lobby {
+  @Field() // in case it can help the frontend
+  readonly _id!: Types.ObjectId;
+
   @Field()
   @prop({ required: true })
   public lobbyName!: string;
 
-  @Field(_type => User )
-  @prop({ ref: () => User,required: true, indexes: true })// added indexes for faster queries
+  @Field(_type => User)
+  @prop({ ref: () => User, required: true, indexes: true })// added indexes for faster queries
   public createdBy!: Ref<User>;
 
   @Field()
@@ -44,7 +48,7 @@ export class Lobby {
   public cryptograms!: string[];
 
   @Field(_type => Int)
-  @prop({ default:  3 })
+  @prop({ default: 3 })
   public playerCap!: Number;
 
   @prop({ required: false }) // Password is only required for private lobbies.
@@ -62,7 +66,7 @@ export class Lobby {
     if (!this.password || !password) {
       throw new Error("Invalid lobby or password");
     }
-  
+
     return bcrypt.compare(password, this.password);
   }
 }
