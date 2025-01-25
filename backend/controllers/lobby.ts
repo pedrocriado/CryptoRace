@@ -26,7 +26,8 @@ export const createLobby = tryCatch(async (req: Request, res: Response) => {
     const lobby = new LobbyModel({
         lobbyName: lobbyName,
         participants: [user._id, user.username],
-        createdBy: [user._id, user.username],
+        createdBy: user._id,
+        createrName: user.username,
         private: privateLobby,
         cryptograms: cryptograms,
         playerCap: playerCap,
@@ -82,8 +83,8 @@ export const deleteLobby = tryCatch(async (req:Request, res:Response) => {
     const user = req.user as User;
 
     // Check if username already exists
-    const deletedLobby = await LobbyModel.findOneAndDelete({ createdBy: [user._id, user.username] });
-
+    const deletedLobby = await LobbyModel.findOneAndDelete({ createdBy: user._id });
+    
     // Users are only allowed to make 1 lobby
     if (!deletedLobby) {
         return res.status(400).json(
@@ -91,7 +92,9 @@ export const deleteLobby = tryCatch(async (req:Request, res:Response) => {
         );
     }
 
+    await GameModel.findOneAndDelete({ lobbyId: deletedLobby._id});
+
     return res.status(200).json(
-        createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!')
+        createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!', deletedLobby)
     );
 })
