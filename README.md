@@ -71,7 +71,7 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG enthusiasts, and st
 - **POST /auth/logout**:
   Logs out a user.
 - **DELETE /auth/delete**:
-  Deletes the current user. The information stored in the leader will also be deleted. 
+  Deletes the current user. Along with the user, all associated information. 
 - **GET /leaderboard**:
   Retrieves the top 10 leaderboard entries. If the user **IS** logged in then the user's entrie will be returned. If the user is **NOT** logged in then the returned user field will be null
 - **GET /leaderboard/rank**:
@@ -79,8 +79,13 @@ Crypto Racer is a platform for cryptography enthusiasts, ARG enthusiasts, and st
 - **POST /leaderboard/addScore**:
   Registers or Updates users rank. (The score that is being ranked is an average of all the best times)
 - **POST /lobby/createLobby**:
-  Creates a lobby with: a list of cryptographs, name of the lobby, player limit, and if the lobby is private or not. If the User already created a lobby still active then they will not be able to create another new one.
+  If the user already has an active lobby, they will not be able to create a new one.
+  The new lobby will have the options of: 
+  - A list of cryptographs
+  - Name of the lobby
+  - Player limit
+  - Whether the lobby is private or not. 
 - **GET /lobby/joinLobby**:
-  when clicking on a open lobby the API will return the lobbyId. if the lobby is private then it will authenticate the password the user gave
+  when clicking on a open lobby, the API will return the 'lobbyId'. If the lobby is private, then it will authenticate the password provided by the user.
 - **DELETE /lobby/deleteLobby**:
-  remove the users own lobby  
+  remove the user's own lobby  
