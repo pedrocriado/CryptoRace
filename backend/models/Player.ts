@@ -6,11 +6,11 @@ import { Game } from "./Game";
 @ObjectType()
 export class Player {
   @Field()
-  @prop({ ref: () => User, required: true })
+  @prop({ ref: () => User, required: true, indexes:true })
   userId!: Ref<User>;
 
   @Field()
-  @prop({ ref: () => Game, required: true })
+  @prop({ ref: () => Game, required: true, indexes:true })
   gameId!: Ref<Game>;
 
   @Field()

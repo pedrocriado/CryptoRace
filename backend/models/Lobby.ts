@@ -15,9 +15,13 @@ export class Lobby {
   @prop({ required: true })
   public lobbyName!: string;
 
-  @Field(_type => [User, String])
+  @Field(_type => User )
+  @prop({ ref: () => User,required: true, indexes: true })// added indexes for faster queries
+  public createdBy!: Ref<User>;
+
+  @Field()
   @prop({ required: true })
-  public createdBy!: [Ref<User>, String];
+  public createrName!: String;
 
   @Field(_type => [User, String])
   @prop({ default: [] })
