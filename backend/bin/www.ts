@@ -23,7 +23,7 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL || "*", // Adjust this for security
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true, // Allow cookies to be sent with requests
   },
 });
@@ -39,6 +39,11 @@ io.on("connection", (socket) => {
     serverDebug(`Message received: ${data}`);
     socket.broadcast.emit("message", data); // Broadcast to all clients
   });
+
+  socket.on('joinLobby', (lobbyId) => {
+    socket.join(lobbyId);
+    console.log('User joined Lobby {lobbyId}');
+  })
 
   socket.on("disconnect", (reason) => {
     serverDebug(`Client disconnected: ${socket.id}, Reason: ${reason}`);
