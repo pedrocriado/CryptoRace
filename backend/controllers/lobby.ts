@@ -9,7 +9,7 @@ import { Lobby, LobbyModel } from "../models/Lobby";
 
 //TODO: fix the participants array.
 export const createLobby = tryCatch(async (req: Request, res: Response) => {
-    const { lobbyName, privateLobby, cryptograms, playerCap, password } = req.body;
+    const { lobbyName, privateLobby, algorithms, playerCap, password } = req.body;
 
     const user = req.user as User;
 
@@ -29,7 +29,7 @@ export const createLobby = tryCatch(async (req: Request, res: Response) => {
         createdBy: user._id,
         createrName: user.username,
         private: privateLobby,
-        cryptograms: cryptograms,
+        algorithms: algorithms,
         playerCap: playerCap,
         password: password
     });
