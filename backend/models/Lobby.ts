@@ -45,7 +45,7 @@ export class Lobby {
 
   @Field(_type => [String])
   @prop({ default: [] })
-  public cryptograms!: string[];
+  public algorithms!: string[];
 
   @Field(_type => Int)
   @prop({ default: 3 })
