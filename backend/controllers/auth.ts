@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
 import { User, UserModel } from "../models/User";
-import { GameModel } from "../models/Game";
 import { LobbyModel } from "../models/Lobby";
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
@@ -93,11 +92,6 @@ export const deleteAccount = tryCatch(async (req: Request, res: Response) => {
 
   //if the user created a lobby then it will get deleted
   const deletedLobby = await LobbyModel.findOneAndDelete({ createdBy: deletedUser._id});
-
-  //if the lobby existed then it will also delete the Game model
-  if(deletedLobby) {
-    await GameModel.findOneAndDelete({ lobbyId: deletedLobby._id});
-  }
 
   req.logout((err) => {
     if (err) {
