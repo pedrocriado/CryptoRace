@@ -3,7 +3,6 @@ import tryCatch from "../utils/tryCatch";
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
 import { User } from "../models/User";
-import { GameModel } from "../models/Game";
 import { LobbyModel } from "../models/Lobby";
 
 //TODO: fix the participants array.
@@ -90,8 +89,6 @@ export const deleteLobby = tryCatch(async (req:Request, res:Response) => {
             createApiResponse(false, MessageTypes.ERROR, 'Username still has a lobby open.')
         );
     }
-
-    await GameModel.findOneAndDelete({ lobbyId: deletedLobby._id});
 
     return res.status(200).json(
         createApiResponse(true, MessageTypes.SUCCESS, 'User lobby created successfully!', deletedLobby)
