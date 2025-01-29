@@ -2,10 +2,9 @@ import { Request, Response } from "express";
 import tryCatch from "../utils/tryCatch";
 import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
-import { User, UserModel } from "../models/User";
-import { Game, GameModel } from "../models/Game";
-import { Player, PlayerModel } from "../models/Player";
-import { Lobby, LobbyModel } from "../models/Lobby";
+import { User } from "../models/User";
+import { GameModel } from "../models/Game";
+import { LobbyModel } from "../models/Lobby";
 
 //TODO: fix the participants array.
 export const createLobby = tryCatch(async (req: Request, res: Response) => {

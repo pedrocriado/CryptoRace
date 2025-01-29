@@ -1,5 +1,5 @@
 import { prop, getModelForClass, Ref } from "@typegoose/typegoose";
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import { User } from "./User";
 import { Game } from "./Game";
 
