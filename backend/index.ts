@@ -7,6 +7,7 @@ import initPassport from "./config/passport";
 import authRouter from "./routes/auth";
 import boardRouter from "./routes/leaderboard";
 import lobbyRouter from "./routes/lobby";
+import connectMongoDBSession from "connect-mongodb-session";
 
 const app = express();
 
@@ -14,10 +15,19 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
+//stores the session in mongoDB to help with multiple intances
+const MongoDBStore = connectMongoDBSession(session);
+
+const mongoStore = new MongoDBStore({
+  uri: process.env.MONGO_URL as string, 
+  collection: "Sessions",
+});
+
 const sessionMiddleware = session({
   secret: process.env.AUTH_SECRET || 'defaultSecret',
   resave: false,
   saveUninitialized: true,
+  store: mongoStore,
   cookie: {
     secure: false,
     httpOnly: true,
