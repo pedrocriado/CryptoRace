@@ -11,8 +11,7 @@ const serverDebug = debug('backend:server');
 /**
  * Get port from .env and store in Express.
  */
-
-const port = normalizePort(process.env.PORT || '3000');
+const port = process.env.PORT || '3000';
 app.set('port', port);
 
 /**
@@ -23,7 +22,6 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL || "*", // Adjust this for security
-    methods: ["GET", "POST", "DELETE"],
     credentials: true, // Allow cookies to be sent with requests
   },
 });
@@ -59,20 +57,6 @@ server.listen(port, () => {
 });
 server.on('error', onError);
 server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val: string) {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) return val; // named pipe
-
-  if (port >= 0) return port; // port number
-
-  return false;
-}
 
 /**
  * Event listener for HTTP server "error" event.
