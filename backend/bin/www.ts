@@ -5,8 +5,6 @@
 import socketManager from "../socket/socketManager";
 import { createServer } from "http";
 import app from "../index";
-import debug from "debug";
-const serverDebug = debug('backend:server');
 
 /**
  * Get port from .env and store it in the Express app.
@@ -27,11 +25,11 @@ const io = socketManager.getIO();
  * Handle Socket.IO connections.
  */
 io.on("connection", (socket) => {
-  serverDebug(`New client connected: ${socket.id}`);
+  console.log(`New client connected: ${socket.id}`);
 
   // Example event handling
   socket.on("message", (data) => {
-    serverDebug(`Message received: ${data}`);
+    console.log(`Message received: ${data}`);
     socket.broadcast.emit("message", data); // Broadcast to all clients
   });
 
@@ -41,7 +39,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("disconnect", (reason) => {
-    serverDebug(`Client disconnected: ${socket.id}, Reason: ${reason}`);
+    console.log(`Client disconnected: ${socket.id}, Reason: ${reason}`);
   });
 });
 
@@ -90,5 +88,5 @@ function onError(error: NodeJS.ErrnoException, port: string | number | false) {
 function onListening() {
   var addr = server.address();
   const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr?.port;
-  serverDebug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }
