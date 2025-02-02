@@ -2,14 +2,14 @@
 
 //this file is used to create a http server.
 
-import { Server } from "socket.io";
+import socketManager from "../socket/socketManager";
 import { createServer } from "http";
 import app from "../index";
 import debug from "debug";
 const serverDebug = debug('backend:server');
 
 /**
- * Get port from .env and store in Express.
+ * Get port from .env and store it in the Express app.
  */
 const port = process.env.PORT || '3000';
 app.set('port', port);
@@ -19,12 +19,9 @@ app.set('port', port);
  */
 
 const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_URL || "*", // Adjust this for security
-    credentials: true, // Allow cookies to be sent with requests
-  },
-});
+socketManager.initialize(server);
+//TODO: will be seperating the socket.io logic to a different file
+const io = socketManager.getIO();
 
 /**
  * Handle Socket.IO connections.

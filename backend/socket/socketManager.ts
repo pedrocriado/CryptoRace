@@ -1,10 +1,16 @@
+import { Server } from 'http';
 import { Server as SocketIOServer } from "socket.io";
 
-//TODO: fix all this
-const socketManager = {
-    io: SocketIOServer | null = null,
+interface SocketManager {
+    io: SocketIOServer | null;
+    initialize: (server: Server) => void;
+    getIO: () => SocketIOServer;
+}
+
+const socketManager: SocketManager = {
+    io: null,
     initialize(server: Server) {
-        this.io = new Server(server, {
+        this.io = new SocketIOServer(server, {
             cors: {
                 origin: process.env.CLIENT_URL || "*", // Adjust this for security
                 credentials: true, // Allow cookies to be sent with requests
@@ -12,10 +18,10 @@ const socketManager = {
         });
     },
     getIO() {
-        if (!socketManager.io) {
+        if (!this.io) {
             throw new Error("Socket.io not initialized");
         }
-        return socketManager.io;
+        return this.io;
     },
 };
 
