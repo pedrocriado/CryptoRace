@@ -4,12 +4,12 @@ import { Server as SocketIOServer, Socket } from "socket.io";
 const lobbyHandler = (socket: Socket, io: SocketIOServer) => {
     socket.on('joinLobby', (lobbyId: string) => {
         socket.join(lobbyId);
-        console.log('User joined Lobby {lobbyId}');
+        console.log(`User joined Lobby ${lobbyId}`);
     });
 
     socket.on('leaveLobby', (lobbyId: string) => {
         socket.leave(lobbyId);
-        console.log('User left Lobby {lobbyId}');
+        console.log(`User left Lobby ${lobbyId}`);
     });
 
     socket.on('startGame', (lobbyId: string) => {
