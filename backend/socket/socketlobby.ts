@@ -11,8 +11,6 @@ const lobbyHandler = (socket: Socket, io: SocketIOServer) => {
         await socket.join(data.lobbyId);
         socket.data.playerName = data.playerName;
         socket.data.isHost = data.isHost;
-        console.log(`User joined Lobby ${data.lobbyId}`);
-        console.log(io.in(data.lobbyId).fetchSockets());
     });
 
     socket.on('leaveLobby', (lobbyId: string) => {
