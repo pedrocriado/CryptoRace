@@ -18,30 +18,6 @@ app.set('port', port);
 
 const server = createServer(app);
 socketManager.initialize(server);
-//TODO: will be seperating the socket.io logic to a different file
-const io = socketManager.getIO();
-
-/**
- * Handle Socket.IO connections.
- */
-io.on("connection", (socket) => {
-  console.log(`New client connected: ${socket.id}`);
-
-  // Example event handling
-  socket.on("message", (data) => {
-    console.log(`Message received: ${data}`);
-    socket.broadcast.emit("message", data); // Broadcast to all clients
-  });
-
-  socket.on('joinLobby', (lobbyId) => {
-    socket.join(lobbyId);
-    console.log('User joined Lobby {lobbyId}');
-  })
-
-  socket.on("disconnect", (reason) => {
-    console.log(`Client disconnected: ${socket.id}, Reason: ${reason}`);
-  });
-});
 
 /**
  * Listen on provided port, on all network interfaces.
