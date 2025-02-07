@@ -19,6 +19,7 @@ app.set('port', port);
 const server = createServer(app);
 socketManager.initialize(server);
 
+export default socketManager;
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -28,6 +29,7 @@ server.listen(port, () => {
 });
 server.on('error', onError);
 server.on('listening', onListening);
+
 
 /**
  * Event listener for HTTP server "error" event.

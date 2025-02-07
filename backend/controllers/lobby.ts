@@ -4,7 +4,7 @@ import createApiResponse from "../utils/apiResponse";
 import MessageTypes from "../utils/messageTypes";
 import { User } from "../models/User";
 import { LobbyModel } from "../models/Lobby";
-import socketManager from "../socket/socketManager";
+import socketManager from "../bin/www";
 
 //TODO: fix the participants array.
 export const createLobby = tryCatch(async (req: Request, res: Response) => {
@@ -34,6 +34,8 @@ export const createLobby = tryCatch(async (req: Request, res: Response) => {
     });
 
     await lobby.save();
+
+    await socketManager.getIO().emit('joinLobby', {lobbyId: lobby._id, playerName: user.username, isHost: true});
 
     return res.status(200).json(
         createApiResponse(true, 
@@ -71,12 +73,14 @@ export const joinLobby = tryCatch(async (req:Request, res:Response) => {
             );
         } 
     }
+    
+    await socketManager.getIO().emit('joinLobby', {lobbyId: lobbyId, playerName: user.username, isHost: false});
 
     return res.status(200).json(
         createApiResponse(true, 
             MessageTypes.SUCCESS, 
             'User successfully joined the lobby!', 
-            {deleteLobby: false, allowed: true})
+            {deleteLobby: false, allowed: true, test: await socketManager.getIO().sockets.fetchSockets() })
     );
 })
 

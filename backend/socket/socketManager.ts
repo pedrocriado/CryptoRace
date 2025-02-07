@@ -21,6 +21,9 @@ const socketManager: SocketManager = {
             if(this.io) {
                 lobbyHandler(socket, this.io);
             }
+            else {
+                throw new Error("Socket.io not initialized");
+            }
             socket.on("disconnect", () => {
                 console.log("Socket disconnected: " + socket.id);
             });

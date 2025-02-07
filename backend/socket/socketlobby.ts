@@ -1,4 +1,6 @@
 import { Server as SocketIOServer, Socket } from "socket.io";
+import mongoose from "mongoose";
+import { LobbyModel } from "../models/Lobby";
 
 interface JoinLobby {
     lobbyId: string;
@@ -15,14 +17,19 @@ const lobbyHandler = (socket: Socket, io: SocketIOServer) => {
 
     socket.on('leaveLobby', (lobbyId: string) => {
         socket.leave(lobbyId);
-        console.log(`User left Lobby ${lobbyId}`);
     });
 
     socket.on('startGame', (lobbyId: string) => {
+        const objectId = new mongoose.Types.ObjectId(lobbyId);
+        const lobby = LobbyModel.findById(objectId);
+        lobby.gameStarted = true;
         io.to(lobbyId).emit('gameStarted');
     });
 
     socket.on('endGame', (lobbyId: string) => {
+        const objectId = new mongoose.Types.ObjectId(lobbyId);
+        const lobby = LobbyModel.findById(objectId);
+        lobby.gameStarted = false;
         io.to(lobbyId).emit('gameEnded');
     });
 };
