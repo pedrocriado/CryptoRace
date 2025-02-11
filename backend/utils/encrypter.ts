@@ -1,16 +1,21 @@
+import { KeyModel } from "../models/Key";
 //TODO: finish the cipher encryptions
-export class Ciphers {
+//const getRandomKey = () => {
 
-    static selectCipher(cipher: string, text: string): string {
+//}
+export class Ciphers {
+    static selectCipher(cipher: string, text: string): string | null {
         if(cipher == "caesar") {
             return this.caesarCipher(text);
         }
         else if(cipher == "vigenere") {
-            return this.vigenereCipher(text);
+            //const key = getKey();
+            //return this.vigenereCipher(text, key);
         }
         else if(cipher == "playfair") {
             return this.playfairCipher(text);
         }
+        return null;
     }
     static caesarCipher(text: string): string {
         return text.replace(/[a-z]/gi, (char) => {
@@ -23,8 +28,9 @@ export class Ciphers {
             return char;
         });
     }
-    static vigenereCipher(text: string): string {
+    static vigenereCipher(text: string, key: string): string {
         //const key = getRandomKey();
+        
     }
     static playfairCipher(text: string): string {
 
