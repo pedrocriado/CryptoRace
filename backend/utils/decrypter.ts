@@ -1,7 +1,7 @@
 
 export class Decrypter {
     static keyMatrix: string[][] = [];
-    static selectCipher(cipher: string, text: string, shift?: number | undefined, key?:string | undefined): string | null {
+    static selectCipher(cipher: string, text: string, shift?: number | undefined, key?: string | undefined): string | null {
         if (cipher == "caesar") {
             return this.caesarDecoder(text, shift);
         }
@@ -14,6 +14,8 @@ export class Decrypter {
         return null;
     }
     static caesarDecoder(text: string, shift: number | undefined): string {
+        if (shift == undefined) return text;
+
         let result = '';
 
         for (let i = 0; i < text.length; i++) {
@@ -35,19 +37,27 @@ export class Decrypter {
         }
         return result;
     }
-    static vigenereCipher(text: string, key?:string | undefined): string {
-        if(!key) return "";
-        return text.replace(/[a-z]/gi, (char, index) => {
-            const code = char.charCodeAt(0);
-            const keyChar = key[index % key.length].toUpperCase();
-            const shift = keyChar.charCodeAt(0) - 65;
-            if (code >= 65 && code <= 90) {
-                return String.fromCharCode(((code - 65 + shift) % 26) + 65);
-            } else if (code >= 97 && code <= 122) {
-                return String.fromCharCode(((code - 97 + shift) % 26) + 97);
+    static vigenereCipher(text: string, key?: string | undefined): string {
+        if (!key) return text;
+        let plaintext = "";
+        key = key.toUpperCase();
+        text = text.toUpperCase();
+
+        let keyIndex = 0;
+
+        for (let i = 0; i < text.length; i++) {
+            const charCode = text.charCodeAt(i);
+
+            if (charCode >= 65 && charCode <= 90) {
+                const keyCharCode = key.charCodeAt(keyIndex % key.length) - 65;
+                const decryptedCharCode = ((charCode - 65 - keyCharCode + 26) % 26) + 65;
+                plaintext += String.fromCharCode(decryptedCharCode);
+                keyIndex++;
+            } else {
+                plaintext += text[i];
             }
-            return char;
-        });
+        }
+        return plaintext;
 
     }
     static findPosition(char: string): [number, number] {
@@ -60,42 +70,23 @@ export class Decrypter {
         }
         return [-1, -1];
     }
-    static playfairCipher(text: string, key?:string | undefined): string {
-        if(!key) return "";
-        this.prepareKeyMatrix(key);
-        text = text.toUpperCase().replace(/J/g, "I").replace(/[^A-Z]/g, "");
-        let ciphertext = "";
-
+    static prepareText(text: string): string {
+        text = text.toUpperCase().replace(/[^A-Z]/g, '');
+        text = text.replace(/J/g, 'I');
+        let preparedText = '';
         for (let i = 0; i < text.length; i += 2) {
-            let char1 = text[i];
-            let char2 = (i + 1 < text.length) ? text[i + 1] : 'X';
-            if (char1 === char2) {
-                char2 = 'X';
-                i--;
-            }
-
-            const pos1 = this.findPosition(char1);
-            const pos2 = this.findPosition(char2);
-
-            if (pos1 && pos2) {
-                let row1 = pos1[0];
-                let col1 = pos1[1];
-                let row2 = pos2[0];
-                let col2 = pos2[1];
-
-                if (row1 === row2) {
-                    ciphertext += this.keyMatrix[row1][(col1 + 1) % 5];
-                    ciphertext += this.keyMatrix[row2][(col2 + 1) % 5];
-                } else if (col1 === col2) {
-                    ciphertext += this.keyMatrix[(row1 + 1) % 5][col1];
-                    ciphertext += this.keyMatrix[(row2 + 1) % 5][col2];
+            if (i + 1 < text.length) {
+                if (text[i] === text[i + 1]) {
+                    preparedText += text[i] + 'X';
+                    i--;
                 } else {
-                    ciphertext += this.keyMatrix[row1][col2];
-                    ciphertext += this.keyMatrix[row2][col1];
+                    preparedText += text[i] + text[i + 1];
                 }
+            } else {
+                preparedText += text[i] + 'X';
             }
         }
-        return ciphertext;
+        return preparedText;
     }
     static prepareKeyMatrix(key: string): void {
         const keyString = key.toUpperCase().replace(/J/g, "I").replace(/[^A-Z]/g, "");
@@ -117,5 +108,38 @@ export class Decrypter {
         for (let i = 0; i < 5; i++) {
             this.keyMatrix[i] = combined.slice(i * 5, (i + 1) * 5).split("");
         }
+    }
+    static playfairCipher(text: string, key?: string | undefined): string {
+        if (!key) return text;
+        const preparedCipherText = this.prepareText(text);
+        this.prepareKeyMatrix(key);
+        let plainText = '';
+
+        for (let i = 0; i < preparedCipherText.length; i += 2) {
+            const char1 = preparedCipherText[i];
+            const char2 = preparedCipherText[i + 1];
+
+            const pos1 = this.findPosition(char1);
+            const pos2 = this.findPosition(char2);
+
+            if (pos1 && pos2) {
+                let row1 = pos1[0];
+                let col1 = pos1[1];
+                let row2 = pos2[0];
+                let col2 = pos2[1];
+
+                if (row1 === row2) {
+                    plainText += this.keyMatrix[row1][(col1 - 1 + 5) % 5];
+                    plainText += this.keyMatrix[row2][(col2 - 1 + 5) % 5];
+                } else if (col1 === col2) {
+                    plainText += this.keyMatrix[(row1 - 1 + 5) % 5][col1];
+                    plainText += this.keyMatrix[(row2 - 1 + 5) % 5][col2];
+                } else {
+                    plainText += this.keyMatrix[row1][col2];
+                    plainText += this.keyMatrix[row2][col1];
+                }
+            }
+        }
+        return plainText;
     }
 }
