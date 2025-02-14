@@ -142,25 +142,23 @@ const keys: string[] = [
     "koala", "zebra", "giraffe", "elephant", "leopard"
 ];
 
-const getAlgorithm = (algortihms: [String]) => {
+export const getAlgorithm = (algortihms: [String]) => {
     //randomly picks an element from the algortihms array
     const randAlgo = Math.floor(Math.random() * algortihms.length);
 
     return algortihms[randAlgo];
 }
 
-const getSentence = () => {
+export const getSentence = () => {
     //randomly picks an element from the algortihms array
     const randSentence = Math.floor(Math.random() * sentences.length);
 
     return sentences[randSentence];
 }
 
-const getKey = () => {
+export const getKey = () => {
     //randomly picks an element from the algortihms array
     const randSentence = Math.floor(Math.random() * sentences.length);
 
     return sentences[randSentence];
 }
-
-export default { getAlgorithm, getSentence, getKey };
