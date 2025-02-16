@@ -1,4 +1,3 @@
-
 export class Decrypter {
     static keyMatrix: string[][] = [];
     static selectCipher(cipher: string, text: string, shift?: number | undefined, key?: string | undefined): string | null {

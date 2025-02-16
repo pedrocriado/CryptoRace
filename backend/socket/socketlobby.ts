@@ -7,6 +7,7 @@ interface JoinLobby {
     playerName: string;
     isHost: boolean;
 }
+//TODO: return the participants array.
 //TODO: I am still thinking on if I should make a different folder or not
 const lobbyHandler = (socket: Socket, io: SocketIOServer) => {
     socket.on('joinLobby', async (data: JoinLobby) => {

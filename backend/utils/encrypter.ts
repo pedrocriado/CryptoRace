@@ -1,8 +1,5 @@
-import getKey from "./random";
-//TODO: finish the cipher encryptions
-//const getRandomKey = () => {
+import { getKey } from "./random";
 
-//}
 export class Ciphers {
     static keyMatrix: string[][] = [];
     static selectCipher(cipher: string, text: string, key?: string): string | null {

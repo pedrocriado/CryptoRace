@@ -6,7 +6,6 @@ import { User } from "../models/User";
 import { LobbyModel } from "../models/Lobby";
 import socketManager from "../bin/www";
 
-//TODO: fix the participants array.
 export const createLobby = tryCatch(async (req: Request, res: Response) => {
     const { lobbyName, privateLobby, algorithms, playerCap, password } = req.body;
 
