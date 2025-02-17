@@ -79,7 +79,7 @@ export const joinLobby = tryCatch(async (req:Request, res:Response) => {
         createApiResponse(true, 
             MessageTypes.SUCCESS, 
             'User successfully joined the lobby!', 
-            {deleteLobby: false, allowed: true, test: await socketManager.getIO().sockets.fetchSockets() })
+            { deleteLobby: false, allowed: true })
     );
 })
 

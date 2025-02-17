@@ -7,13 +7,25 @@ interface JoinLobby {
     playerName: string;
     isHost: boolean;
 }
-//TODO: return the participants array.
-//TODO: I am still thinking on if I should make a different folder or not
+
 const lobbyHandler = (socket: Socket, io: SocketIOServer) => {
     socket.on('joinLobby', async (data: JoinLobby) => {
         await socket.join(data.lobbyId);
         socket.data.playerName = data.playerName;
         socket.data.isHost = data.isHost;
+
+        //working but I dont have a client side connection yet so I can't test it
+        //const roommateSockets = await io.in(data.roomId).fetchSockets();
+        //const players = [];
+        //for (roommate of roommateSockets) {
+        //    players.push({
+        //        id: roommate.id,
+        //        name: roommate.data.playerName,
+        //       isHost: roommate.data.isHost,
+        //        boardPosition: 0,
+        //        animationState: 'walking'
+        //    });
+        //}
     });
 
     socket.on('leaveLobby', (lobbyId: string) => {
